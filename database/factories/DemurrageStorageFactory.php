@@ -42,7 +42,7 @@ class DemurrageStorageFactory extends Factory
         DB::table('demurrage_storages')->insert(
             [
                 'carrier' => 'CMA',
-                'type' => 'D',
+                'type' => 'DEM',
                 'port' => 'BARCELONA',
                 'fromday' => 0,
                 'today' => 10,
@@ -52,19 +52,8 @@ class DemurrageStorageFactory extends Factory
                 'tarsup' => 5.00,
             ],
             [
-                'carrier' => 'ARKAS',
-                'type' => 'S',
-                'port' => 'ALGECIRAS',
-                'fromday' => 0,
-                'today' => 7,
-                'tar20' => 11.00,
-                'tar40' => 22.00,
-                'valid' => '2025-03-25',
-                'tarsup' => 3.00
-            ],
-            [
                 'carrier' => 'CMA',
-                'type' => 'D',
+                'type' => 'DEM',
                 'port' => 'BILBAO',
                 'fromday' => 0,
                 'today' => 10,
@@ -73,20 +62,86 @@ class DemurrageStorageFactory extends Factory
                 'valid' => '2025-04-24',
                 'tarsup' => 5.00
             ],
+             [
+                'carrier' => 'ARKAS',
+                'type' => 'DEM',
+                'port' => 'ALGECIRAS',
+                'fromday' => 0,
+                'today' => 7,
+                'tar20' => 0.00,
+                'tar40' => 0.00,
+                'valid' => '2025-03-25',
+                'tarsup' => 0.00
+            ],
             [
                 'carrier' => 'ARKAS',
-                'type' => 'S',
+                'type' => 'DEM',
+                'port' => 'ALGECIRAS',
+                'fromday' => 8,
+                'today' => 14,
+                'tar20' => 28.00,
+                'tar40' => 40.00,
+                'valid' => '2025-04-25',
+                'tarsup' => 0.00
+            ],
+            [
+                'carrier' => 'ARKAS',
+                'type' => 'DEM',
+                'port' => 'ALGECIRAS',
+                'fromday' => 15,
+                'today' => 21,
+                'tar20' => 38.00,
+                'tar40' => 70.00,
+                'valid' => '2025-04-25',
+                'tarsup' => 0.00
+            ],
+            [
+                'carrier' => 'ARKAS',
+                'type' => 'DEM',
+                'port' => 'ALGECIRAS',
+                'fromday' => 22,
+                'today' => 999,
+                'tar20' => 70.00,
+                'tar40' => 100.00,
+                'valid' => '2025-04-25',
+                'tarsup' => 0.00
+            ],
+             [
+                'carrier' => 'ARKAS',
+                'type' => 'STO',
                 'port' => 'ALGECIRAS',
                 'fromday' => 0,
                 'today' => 7,
                 'tar20' => 11.00,
                 'tar40' => 22.00,
                 'valid' => '2025-04-25',
-                'tarsup' => 3.00
+                'tarsup' => 0.00
+            ],
+             [
+                'carrier' => 'ARKAS',
+                'type' => 'STO',
+                'port' => 'ALGECIRAS',
+                'fromday' => 8,
+                'today' => 12,
+                'tar20' => 50.00,
+                'tar40' => 75.00,
+                'valid' => '2025-04-25',
+                'tarsup' => 0.00
+            ],
+             [
+                'carrier' => 'ARKAS',
+                'type' => 'STO',
+                'port' => 'ALGECIRAS',
+                'fromday' => 13,
+                'today' => 999,
+                'tar20' => 75.00,
+                'tar40' => 90.00,
+                'valid' => '2025-04-25',
+                'tarsup' => 0.00
             ],
             [
                 'carrier' => 'ARKAS',
-                'type' => 'D',
+                'type' => 'DEM',
                 'port' => 'BARCELONA',
                 'fromday' => 0,
                 'today' => 10,
@@ -97,7 +152,7 @@ class DemurrageStorageFactory extends Factory
             ],
             [
                 'carrier' => 'EVERGREEN',
-                'type' => 'S',
+                'type' => 'STO',
                 'port' => 'BILBAO',
                 'fromday' => 0,
                 'today' => 7,
@@ -108,7 +163,7 @@ class DemurrageStorageFactory extends Factory
             ],
             [
                 'carrier' => 'EVERGREEN',
-                'type' => 'D',
+                'type' => 'DEM',
                 'port' => 'VALENCIA',
                 'fromday' => 0,
                 'today' => 10,

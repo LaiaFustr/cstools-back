@@ -26,6 +26,18 @@ class DemurrageStorageController extends Controller
         return response()->json(DemurrageStorage::select('port')->distinct()->get());
     }
 
+
+
+    public function portsWhereCarrier($carrier){
+
+        return response()->json(DemurrageStorage::select('port')->where('carrier', $carrier)->distinct()->get());
+    }
+
+    public function carriersWherePort($port){
+        return response()->json(DemurrageStorage::select('carrier')->where('port', $port)->distinct()->get());
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */

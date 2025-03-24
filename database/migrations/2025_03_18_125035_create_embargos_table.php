@@ -12,8 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('embargos', function (Blueprint $table) {
-            $table->id();
+            $table->string('empaicod')->primary();
+            $table->string('embobserv');
+            $table->string('emexcl');
+            $table->string('emusua');
+            $table->string('emfeca');
+            $table->string('emusum');
+            $table->string('emfecm');
+            $table->string('embaja');
+            
             $table->timestamps();
+
+            $table->foreign('empaicod')->references('papaicod')->on('countries');
         });
     }
 

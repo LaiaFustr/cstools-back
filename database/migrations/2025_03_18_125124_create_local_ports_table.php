@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('local_ports', function (Blueprint $table) {
-            $table->id();
+            $table->string('plptoloc')->primary();
+            $table->string('plcodpos');
+            $table->string('plnompto');
+            $table->string('pldlgni');//Ofic. IMP Dach: 231, 232, ..
+            $table->string('pldlgne'); //Ofic. EXP Dach: 231, 232, ..
+            $table->string('plfecalt');
+            $table->string('plbaja');
+            
+
             $table->timestamps();
         });
     }

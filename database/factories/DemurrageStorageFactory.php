@@ -23,7 +23,7 @@ class DemurrageStorageFactory extends Factory
         return [
             'carrier' => $this->faker->randomElement(['ARKAS', 'CMA', 'COSCO SHIPPING', 'EVERGREEN', 'HAMBURG SUD', 'HAPAG', 'HYUNDAI', 'KALYPSO', 'MAERSK', 'MAERSK SPOT', 'MSC', 'ONE', 'OOCL', 'SEALAND', 'YANG MING', 'ZIM']
         ),
-            'type' => $this->faker->randomElement(['D', 'S']),
+            'type' => $this->faker->randomElement(['DEM', 'STO']),
             'port' => $this->faker->randomElement([
                 'ALGECIRAS', 'ALICANTE', 'ALMERIA', 'BARCELONA', 'BILBAO', 'CADIZ', 'CARTAGENA', 'CASTELLON', 
                 'GIJON', 'LAS PALMAS', 'MALAGA', 'MARIN', 'SAGUNTO', 'TARRAGONA', 'TENERIFE', 'VALENCIA', 'VIGO'

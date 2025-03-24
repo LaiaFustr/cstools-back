@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('demurrage_storages', function (Blueprint $table) {
 
             $table->string('carrier');
-            $table->enum('type', ['D', 'S']);
+            $table->enum('type', ['DEM', 'STO']);
             $table->string('port');
             $table->integer('fromday');
             $table->integer('today');

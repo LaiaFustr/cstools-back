@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        DemurrageStorage::factory()->count(20)->create();
+        DemurrageStorage::factory()->count(50)->create();
     }
 }

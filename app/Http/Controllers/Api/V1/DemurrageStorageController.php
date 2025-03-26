@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DemurrageStorage;
+use DateTime;
+use Carbon\Carbon;
 
 class DemurrageStorageController extends Controller
 {
@@ -18,8 +20,6 @@ class DemurrageStorageController extends Controller
 
     public function indexCarrier()
     {
-
-        /* dd(DemurrageStorage::select('carrier')->distinct()->get()); */
         return response()->json(DemurrageStorage::select('carrier')->distinct()->get());
     }
 
@@ -28,11 +28,8 @@ class DemurrageStorageController extends Controller
         return response()->json(DemurrageStorage::select('port')->distinct()->get());
     }
 
-
-
     public function portsWhereCarrier($carrier)
     {
-
         return response()->json(DemurrageStorage::select('port')->where('carrier', $carrier)->distinct()->get());
     }
 
@@ -43,46 +40,93 @@ class DemurrageStorageController extends Controller
 
     public function calcRes(Request $request)
     {
-        $vessel_arrival = request('vessel_arrival');
-        $gate_out_full = request('gate_out');
-        $gate_empty = request('gate_empty');
+        //request debe tener los campos de demurragestorage (carrier, port, date, type)
 
-        $carrier = request('carrier');
-        $port = request('port');
-        $fromday = 0;
-        $today = 0;
+        $vessel_arrival = Carbon::parse($request->vessel_arrival);
+        $gate_out_full = Carbon::parse($request->gate_out_full);
+        $gate_in_empty = Carbon::parse($request->gate_in_empty);
 
-        $type = request('type');
-        $freeSto = request('freeSto');
-        $freeDem = request('freeDem');
+        $carrier = $request->carrier;
+        $port = $request->port;
+        $container = $request->container;
+        $free_sto_days = $request->free_sto_days;
+        $free_dem_days = $request->free_days_dem;
 
-        if (request('tar20')) {
-            $tar = request('tar20');
-        } else {
-            $tar = request('tar40');
+        //fromdays = gate_out_full - vessel_arrival
+        //todays = gate_in_empty -gate_out_full
+
+        /*  $tariffsto = [];
+        $tariffdem = []; */
+
+        $stodays = $vessel_arrival->diffInDays($gate_out_full);
+        $demdays =  $gate_out_full->diffInDays($gate_in_empty);
+
+        $priced_sto = $stodays - $request->free_storage;
+        if ($priced_sto < 0)
+            $priced_sto = 0;
+        $priced_dem = $demdays - $request->free_demurrage;
+        if ($priced_dem < 0)
+            $priced_dem = 0;
+
+
+        /* Esta es storage */
+
+        /* select * from CENGEBADAD.QSDEMSTO q 
+        inner join (
+        select max(DSVALID) as DSVALID, DSCARRIER, DSPORT, DSTYPE
+        from CENGEBADAD.QSDEMSTO t 
+        where DSCARRIER = '" . $_POST['carrier_calc'] . "' and DSPORT = '" . $_POST['port_calc'] . "' and DSTYPE = 'STO' and DSVALID < '" . $_POST['gate_out_full'] . "' 
+        group by DSCARRIER, DSPORT, DSTYPE) tmp on tmp.DSVALID = q.DSVALID
+        where q.DSCARRIER = '" . $_POST['carrier_calc'] . "' and q.DSPORT = '" . $_POST['port_calc'] . "' and q.DSTYPE = 'STO' order by FROM */
+
+
+        /* Esta es demurrage */
+
+        /* select * from demurrage_storages q 
+        inner join (
+        select max(valid) as valid, carrier, port, type
+        from demurrage_storages t 
+        where carrier = 'HAPAG' and port = 'ALMERIA' and type = 'DEM' and valid < '2025-10-10' 
+        group by carrier, port, type) tmp on tmp.valid = q.valid
+        where q.carrier = 'HAPAG' and q.port = 'ALMERIA' and q.type = 'DEM'  order by fromday; */
+        try {
+            $subquery = DemurrageStorage::where('carrier', $carrier)
+                ->where('port', $port)
+                ->where('type', 'STO')
+                ->where('valid', '>', $gate_in_empty)
+                ->groupBy('carrier', 'port', 'type')
+                ->pluck('valid')->max();
+
+            $tariffsto = DemurrageStorage::where('carrier', $carrier)
+                ->where('port', $port)
+                ->where('type', 'STO')
+                ->where('valid', $subquery)
+                ->orderBy('fromday')->get();
+        } catch (\Exception $e) {
+            $tariffsto = 'No hay tarifas';
         }
 
-        $tarsup = request('tarsup');
-
-        $today = $vessel_arrival - $gate_out_full;
-
-        $storage = DemurrageStorage::where('carrier', $carrier)
-            ->where('port', $port)
-            ->where('fromday', '<=', 0)
-            ->where('today', '>=', $today)
-            ->where('type', 'STO')
-            ->get();
-
-        $demurrage = DemurrageStorage::where('carrier', $carrier)
-            ->where('port', $port)
-            ->where('fromday', '<=', $fromday)
-            ->where('today', '>=', $today)
-            ->where('type', 'DEM')
-            ->get();
 
 
 
-        return response()->json($storage, $demurrage);
+
+        $response = [/* $vessel_arrival, $gate_out_full, $gate_in_empty, */$stodays, $demdays, $priced_sto, $priced_dem, $tariffsto];
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //$response = [$request->param1, $request->param2];
+
+        return response()->json($response);
     }
 
     /**

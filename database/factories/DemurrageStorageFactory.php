@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\DemurrageStorage;
+use Carbon\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DemurrageStorage>
@@ -20,6 +21,7 @@ class DemurrageStorageFactory extends Factory
 
     public function definition(): array
     {
+        $date = Carbon::createFromDate(2024, 12, 31)->subDays(rand(0, 3650));
         return [
             'carrier' => $this->faker->randomElement(['ARKAS', 'CMA', 'COSCO SHIPPING', 'EVERGREEN', 'HAMBURG SUD', 'HAPAG', 'HYUNDAI', 'KALYPSO', 'MAERSK', 'MAERSK SPOT', 'MSC', 'ONE', 'OOCL', 'SEALAND', 'YANG MING', 'ZIM']
         ),
@@ -32,7 +34,7 @@ class DemurrageStorageFactory extends Factory
             'today' => $this->faker->randomNumber(2),
             'tar20' => $this->faker->randomFloat(2, 0, 16),
             'tar40' => $this->faker->randomFloat(2, 0, 99),
-            'valid' => $this->faker->date(),
+            'valid' => Carbon::parse($this->faker->dateTimeBetween('-10 years', '2024-12-31'))->format('Y-m-d'),/* $this->faker->dateTimeBetween('-100 years', '2024-12-31'), *//* dateTimeBetween('-10 years', '2024-12-31') *//* $this->faker->date(), */
             'tarsup' => $this->faker->randomFloat(2, 0, 99),
         ];
 

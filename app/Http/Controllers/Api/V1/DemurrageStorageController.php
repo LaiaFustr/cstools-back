@@ -55,62 +55,125 @@ class DemurrageStorageController extends Controller
         //fromdays = gate_out_full - vessel_arrival
         //todays = gate_in_empty -gate_out_full
 
-        /*  $tariffsto = [];
-        $tariffdem = []; */
+        $total_tariff_sto = [];
+        $total_tariff_dem = [];
 
-        $stodays = $vessel_arrival->diffInDays($gate_out_full);
-        $demdays =  $gate_out_full->diffInDays($gate_in_empty);
 
-        $priced_sto = $stodays - $request->free_storage;
-        if ($priced_sto < 0)
+        $stodays = $vessel_arrival->diffInDays($gate_out_full) + 1; //+1? no se si se suma o no
+        $demdays =  $vessel_arrival->diffInDays($gate_in_empty) + 1; //+1?
+        if ($free_sto_days <= 0) {
+
+            try {
+                $query_free_sto = DemurrageStorage::where('carrier', $carrier)
+                    ->where('port', $port)
+                    ->where('type', 'STO')
+                    ->where('fromday', 0)->get();
+
+                if (count($query_free_sto) <= 0) {
+                    $free_sto_days = 0;
+                } else {
+                    $free_sto_days = $query_free_sto['today'];
+                }
+            } catch (\Exception $e) {
+                $query_free_sto = $e;
+            }
+        }
+
+        if ($free_dem_days <= 0) {
+
+            try {
+                $query_free_dem = DemurrageStorage::where('carrier', $carrier)
+                    ->where('port', $port)
+                    ->where('type', 'DEM')
+                    ->where('fromday', 0)->get();
+
+                if (count($query_free_dem) <= 0) {
+                    $free_dem_days = 0;
+                } else {
+                    $free_dem_days = $query_free_dem['today'];
+                }
+            } catch (\Exception $e) {
+                $query_free_dem = $e;
+            }
+        }
+
+        if ($container == 20)
+            $container = 'tar20';
+        else
+            $container = 'tar40';
+
+
+        $priced_sto = $stodays - $free_sto_days;
+        if ($priced_sto < 0) {
             $priced_sto = 0;
-        $priced_dem = $demdays - $request->free_demurrage;
-        if ($priced_dem < 0)
+        } else {
+            $priced_sto = $stodays - $free_sto_days;
+        }
+
+        $priced_dem = $demdays - $free_dem_days;
+        if ($priced_dem < 0) {
             $priced_dem = 0;
+        }
 
 
-        /* Esta es storage */
 
-        /* select * from CENGEBADAD.QSDEMSTO q 
-        inner join (
-        select max(DSVALID) as DSVALID, DSCARRIER, DSPORT, DSTYPE
-        from CENGEBADAD.QSDEMSTO t 
-        where DSCARRIER = '" . $_POST['carrier_calc'] . "' and DSPORT = '" . $_POST['port_calc'] . "' and DSTYPE = 'STO' and DSVALID < '" . $_POST['gate_out_full'] . "' 
-        group by DSCARRIER, DSPORT, DSTYPE) tmp on tmp.DSVALID = q.DSVALID
-        where q.DSCARRIER = '" . $_POST['carrier_calc'] . "' and q.DSPORT = '" . $_POST['port_calc'] . "' and q.DSTYPE = 'STO' order by FROM */
-
-
-        /* Esta es demurrage */
-
-        /* select * from demurrage_storages q 
-        inner join (
-        select max(valid) as valid, carrier, port, type
-        from demurrage_storages t 
-        where carrier = 'HAPAG' and port = 'ALMERIA' and type = 'DEM' and valid < '2025-10-10' 
-        group by carrier, port, type) tmp on tmp.valid = q.valid
-        where q.carrier = 'HAPAG' and q.port = 'ALMERIA' and q.type = 'DEM'  order by fromday; */
         try {
-            $subquery = DemurrageStorage::where('carrier', $carrier)
+            $querysto = DemurrageStorage::where('carrier', $carrier)
                 ->where('port', $port)
                 ->where('type', 'STO')
-                ->where('valid', '>', $gate_in_empty)
-                ->groupBy('carrier', 'port', 'type')
-                ->pluck('valid')->max();
+                ->where(
+                    'valid',
+                    DemurrageStorage::where('carrier', $carrier)
+                        ->where('port', $port)
+                        ->where('type', 'STO')
+                        ->where('valid', '<',  $gate_out_full) //gate_out_full
+                        ->max('valid')
+                )->orderBy('fromday')->get();
 
-            $tariffsto = DemurrageStorage::where('carrier', $carrier)
-                ->where('port', $port)
-                ->where('type', 'STO')
-                ->where('valid', $subquery)
-                ->orderBy('fromday')->get();
+            foreach ($querysto as $rowsto) {
+                if ($rowsto['today'] > $free_sto_days && $rowsto['fromday'] <= $stodays) {
+
+                    if ($free_sto_days == $rowsto['fromday']) {
+                        $day_sto_range = $rowsto['today'] - $rowsto['fromday'];
+                    } else {
+                        $day_sto_range = $rowsto['today'] - ($rowsto['fromday'] - 1);
+                    }
+
+                    if ($free_sto_days >= $rowsto['fromday'] && $free_sto_days <= $rowsto['today']) {
+                        $priced_sto_range = $rowsto['fromday'] - $free_sto_days;
+                    } else {
+                        $priced_sto_range = $rowsto['fromday'] - ($free_sto_days - 1);
+                    }
+                    $daysTariff = min($day_sto_range, $priced_sto_range, $priced_sto);
+                    $price = $daysTariff . ' x ' . $rowsto[$container] . ' €/Day';
+                    array_push($total_tariff_sto, $price);
+                }
+            }
         } catch (\Exception $e) {
-            $tariffsto = 'No hay tarifas';
+            $querysto = '' . $e;
+        }
+
+
+        try {
+            $querydem = DemurrageStorage::where('carrier', $carrier)
+                ->where('port', $port)
+                ->where('type', 'DEM')
+                ->where(
+                    'valid',
+                    DemurrageStorage::where('carrier', $carrier)
+                        ->where('port', $port)
+                        ->where('type', 'DEM')
+                        ->where('valid', '<', $gate_in_empty) //gate_in_empty
+                        ->max('valid')
+                )->orderBy('fromday')->get();
+        } catch (\Exception $e) {
+            $querydem = '' . $e;
         }
 
 
 
 
-
-        $response = [/* $vessel_arrival, $gate_out_full, $gate_in_empty, */$stodays, $demdays, $priced_sto, $priced_dem, $tariffsto];
+        $response = ['tariff' => $total_tariff_sto, 'stodays' => $stodays, 'demdays' => $demdays, 'priced_sto' => $priced_sto, 'priced_dem' => $priced_dem, 'querysto' => $querysto, 'querydem' => $querydem];
 
 
 

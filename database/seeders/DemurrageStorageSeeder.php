@@ -16,13 +16,72 @@ class DemurrageStorageSeeder extends Seeder
         DB::table('demurrage_storages')->insert([
             [
                 'carrier' => 'CMA',
+                'type' => 'DEM',
+                'port' => 'VALENCIA',
+                'fromday' => 0,
+                'today' => 7,
+                'tar20' => 0,
+                'tar40' => 0,
+                'valid' => '2025-01-15',
+                'tarsup' =>0,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'DEM',
+                'port' => 'VALENCIA',
+                'fromday' => 8,
+                'today' => 11,
+                'tar20' => 37,
+                'tar40' => 52,
+                'valid' => '2025-01-15',
+                'tarsup' =>0,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'DEM',
+                'port' => 'VALENCIA',
+                'fromday' => 12,
+                'today' => 17,
+                'tar20' => 52,
+                'tar40' => 77,
+                'valid' => '2025-01-15',
+                'tarsup' =>0,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'DEM',
+                'port' => 'VALENCIA',
+                'fromday' => 18,
+                'today' => 999,
+                'tar20' => 75,
+                'tar40' => 105,
+                'valid' => '2025-01-15',
+                'tarsup' =>0,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            
+            
+            
+            
+            
+            
+            
+            [
+                'carrier' => 'CMA',
                 'type' => 'STO',
                 'port' => 'VALENCIA',
                 'fromday' => 0,
                 'today' => 5,
                 'tar20' => 0,
                 'tar40' => 0,
-                'valid' => '2019-01-01',
+                'valid' => '2024-02-01',
                 'tarsup' =>0,
                 'created_at'=>now(),
                 'updated_at'=>now()
@@ -35,7 +94,7 @@ class DemurrageStorageSeeder extends Seeder
                 'today' => 7,
                 'tar20' => 2,
                 'tar40' => 4,
-                'valid' => '2019-01-01',
+                'valid' => '2024-02-01',
                 'tarsup' => 0,
                 'created_at'=>now(),
                 'updated_at'=>now()
@@ -48,7 +107,7 @@ class DemurrageStorageSeeder extends Seeder
                 'today' => 14,
                 'tar20' => 5,
                 'tar40' => 10,
-                'valid' => '2019-01-01',
+                'valid' => '2024-02-01',
                 'tarsup' => 0,
                 'created_at'=>now(),
                 'updated_at'=>now()
@@ -61,8 +120,73 @@ class DemurrageStorageSeeder extends Seeder
                 'today' => 999,
                 'tar20' => 40,
                 'tar40' => 80,
+                'valid' => '2024-02-01',
+                'tarsup' =>0,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'STO',
+                'port' => 'VALENCIA',
+                'fromday' => 0,
+                'today' => 4,
+                'tar20' => 0,
+                'tar40' => 0,
                 'valid' => '2019-01-01',
                 'tarsup' =>0,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'STO',
+                'port' => 'VALENCIA',
+                'fromday' => 5,
+                'today' => 7,
+                'tar20' => 1.57,
+                'tar40' => 3.14,
+                'valid' => '2019-01-01',
+                'tarsup' =>6,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'STO',
+                'port' => 'VALENCIA',
+                'fromday' => 8,
+                'today' => 18,
+                'tar20' => 3.14,
+                'tar40' => 6.28,
+                'valid' => '2019-01-01',
+                'tarsup' =>10,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'STO',
+                'port' => 'VALENCIA',
+                'fromday' => 19,
+                'today' => 30,
+                'tar20' => 10,
+                'tar40' => 20,
+                'valid' => '2019-01-01',
+                'tarsup' =>15,
+                'created_at'=>now(),
+                'updated_at'=>now()
+            ],
+            [
+                'carrier' => 'CMA',
+                'type' => 'STO',
+                'port' => 'VALENCIA',
+                'fromday' => 31,
+                'today' => 999,
+                'tar20' => 30,
+                'tar40' => 60,
+                'valid' => '2019-01-01',
+                'tarsup' =>20,
                 'created_at'=>now(),
                 'updated_at'=>now()
             ],

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call(DemurrageStorageSeeder::class);
-        DemurrageStorage::factory()->count(50)->create();
+        //DemurrageStorage::factory()->count(50)->create();
         
         User::factory()->create([
             'name' => 'Test User',

@@ -194,6 +194,33 @@ class DemurrageStorageController extends Controller
                 )->orderBy('fromday')->get();
 
 
+                foreach ($querydem as $rowdem) {
+                    if ($rowdem['today'] > $free_dem_days && $rowdem['fromday'] <= $demdays) {
+    
+                        if ($free_dem_days == $rowdem['fromday']) {
+                            $day_dem_range = $rowdem['today'] - $rowdem['fromday'];
+                        } else {
+                            $day_dem_range = $rowdem['today'] - ($rowdem['fromday'] - 1);
+                        }
+    
+                        if ($free_dem_days >= $rowdem['fromday'] && $free_dem_days <= $rowdem['today']) {
+                            $priced_dem_range = $rowdem['fromday'] - $free_dem_days;
+                        } else {
+                            $priced_dem_range = $rowdem['fromday'] - ($free_dem_days - 1);
+                        }
+    
+    
+                        $daysTariff = min($day_dem_range, $priced_dem_range, $priced_dem);
+                        $price = $daysTariff . ' x ' . $rowdem[$container] . ' €/Day';
+    
+                       
+                        array_push($total_tariff_dem, $price);
+                    }
+                }
+    
+
+
+
 
                 foreach ($querydem as $rowdem_d) {
                     if ($demdays >= $rowdem_d['fromday']) {
@@ -217,7 +244,7 @@ class DemurrageStorageController extends Controller
 
 
 
-        $response = [$querysto, 'sto_tariff' => $total_tariff_sto,  'tariff_sto_detail'=> $tariff_sto_detail,  'tariff_dem_detail'=> $tariff_dem_detail,'stodays' => $stodays, 'demdays' => $demdays, 'priced_sto' => $priced_sto, 'priced_dem' => $priced_dem,/* 'querysto' => $querysto, 'querydem' => $querydem, 'query_free_sto' => $query_free_sto, 'free_sto_days' => $free_sto_days  */];
+        $response = [$querysto, 'sto_tariff' => $total_tariff_sto,  'tariff_sto_detail'=> $tariff_sto_detail,  'tariff_dem_detail'=> $tariff_dem_detail,'stodays' => $stodays, 'demdays' => $demdays, 'priced_sto' => $priced_sto, 'priced_dem' => $priced_dem,'dem_tariff' => $total_tariff_dem,/* 'querysto' => $querysto, 'querydem' => $querydem, 'query_free_sto' => $query_free_sto, 'free_sto_days' => $free_sto_days  */];
 
 
 

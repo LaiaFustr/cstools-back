@@ -62,7 +62,7 @@ class DemurrageStorageSeeder extends Seeder
                 'tar20' => 75,
                 'tar40' => 105,
                 'valid' => '2025-01-15',
-                'tarsup' =>0,
+                'tarsup' =>20,
                 'created_at'=>now(),
                 'updated_at'=>now()
             ],
@@ -121,7 +121,7 @@ class DemurrageStorageSeeder extends Seeder
                 'tar20' => 40,
                 'tar40' => 80,
                 'valid' => '2024-02-01',
-                'tarsup' =>0,
+                'tarsup' =>10,
                 'created_at'=>now(),
                 'updated_at'=>now()
             ],

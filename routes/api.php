@@ -16,10 +16,6 @@ Route::apiResource('v1/countries', CountryController::class);
 
 Route::get('/v1/indexCarrier', [DemurrageStorageController::class, 'indexCarrier']);
 Route::get('/v1/indexPort', [DemurrageStorageController::class, 'indexPorts']);
-
-
 Route::get('/v1/portswherecarrier/{carrier}', [DemurrageStorageController::class, 'portsWhereCarrier']);
-
 Route::get('/v1/carrierswhereport/{port}', [DemurrageStorageController::class, 'carriersWherePort']);
-
 Route::post('/v1/calculo', [DemurrageStorageController::class, 'calcRes']);

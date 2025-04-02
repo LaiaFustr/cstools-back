@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\DemurrageStorage;
 use App\Models\Country;
+use App\Models\Embargo;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,5 +29,7 @@ class DatabaseSeeder extends Seeder
         ]);
         User::factory(10)->create();
         Country::factory()->count(200)->create();
+
+        Embargo::factory()->count(30)->create();
     }
 }

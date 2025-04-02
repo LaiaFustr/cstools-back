@@ -21,7 +21,6 @@ class DemurrageStorageFactory extends Factory
 
     public function definition(): array
     {
-        $date = Carbon::createFromDate(2024, 12, 31)->subDays(rand(0, 3650));
         return [
             'carrier' => $this->faker->randomElement(['ARKAS', 'CMA', 'COSCO SHIPPING', 'EVERGREEN', 'HAMBURG SUD', 'HAPAG', 'HYUNDAI', 'KALYPSO', 'MAERSK', 'MAERSK SPOT', 'MSC', 'ONE', 'OOCL', 'SEALAND', 'YANG MING', 'ZIM']
         ),

@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('countries', function (Blueprint $table) {
-            $table->string('papaicod')->unique();
+            $table->string('papaicod')->primary();
             $table->string('papainom');
             $table->string('papaibus');
             $table->string('papainomp');
             $table->string('papaibusp');
-            $table->string('papainomi');
-            $table->string('papaibusi');
+            $table->string('papainome');
+            $table->string('papaibuse');
             $table->string('papainomf');
             $table->string('papaibusf');
             $table->string('paarecod');
@@ -27,11 +27,13 @@ return new class extends Migration
             $table->string('pafmtdch');
             $table->string('pacpcx');
             $table->string('pacee');
-            $table->string('padiv');
-            $table->string('paestprv');
-            $table->string('pabaja');
+            $table->string('padiv')->nullable();
+            $table->string('paestprv')->nullable();
+            $table->string('pabaja')->nullable();
 
             $table->timestamps();
+
+            $table->unique(['papainom', 'papaicod']);
         });
     }
 

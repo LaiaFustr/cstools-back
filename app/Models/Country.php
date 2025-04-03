@@ -17,6 +17,6 @@ class Country extends Model
 
     public function embargo()
     {
-        return $this->hasOne(Embargo::class);
+        return $this->hasOne(Embargo::class, 'empaicod', 'papaicod');
     }
 }

@@ -15,6 +15,6 @@ class Embargo extends Model
 
     public function country()
     {
-        return $this->belongsTo(Country::class, 'empaicod');
+        return $this->belongsTo(Country::class);
     }
 }

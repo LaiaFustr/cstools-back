@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Country;
+use Illuminate\Support\Facades\Log;
+use App\Models\Embargo;
+use Illuminate\Support\Facades\DB;
 
 class CountryController extends Controller
 {
@@ -13,7 +16,31 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::all();
+
+        /* $sqlPaisDesde = "select papaicod, papainom, papaibus, paestprv, papaibusi, coalesce(EMEXCL , '') as EMB
+                                                    from CENGEBADAD.PAISAREA 
+                                                    left join CENGEBADAD.FCEMBARGO f on EMPAIS = PAPAICOD and EMBAJA = ''
+                                                    order by 2"; */
+        //$countries = Country::all();
+
+        //$emb = Embargo::select('emexcl', DB::raw("COALESCE(emexcl, '') AS emb"))->where('embaja', '')/* ->get() */;
+        //Log::info($emb);
+
+        $countries = Country::with(['embargo'=> function ($emb) {
+            $emb->select('empaicod','emexcl AS emb')->where('embaja', '');
+           /*  Log::info($emb); */
+        }])->select('papaicod', 'papainom', 'papaibus', 'paestprv', 'papaibuse')->get()->map(function ($country){
+            if(isset($country->embargo->emb)){
+                $country->emb = $country->embargo->emb;
+            }else{
+                $country->emb ='';
+            }
+            unset($country->embargo);
+            return $country;
+        });
+
+
+        //Log::info($countries);
 
         return response()->json($countries);
     }

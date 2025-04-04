@@ -23,15 +23,11 @@ class CountryController extends Controller
                                                     order by 2"; */
         //$countries = Country::all();
 
-        //$emb = Embargo::select('emexcl', DB::raw("COALESCE(emexcl, '') AS emb"))->where('embaja', '')/* ->get() */;
-        //Log::info($emb);
-
-        $countries = Country::with(['embargo'=> function ($emb) {
-            $emb->select('empaicod','emexcl AS emb')->where('embaja', '');
-           /*  Log::info($emb); */
-        }])->select('papaicod', 'papainom', 'papaibus', 'paestprv', 'papaibuse')->get()->map(function ($country){
-            if(isset($country->embargo->emb)){
-                $country->emb = $country->embargo->emb;
+        $countries = Country::with('embargo')
+        ->select('papaicod', 'papainom', 'papaibus', 'paestprv', 'papaibuse')->get()
+        ->map(function ($country){
+            if(isset($country->embargo->emexcl)){
+                $country->emb = $country->embargo->emexcl;
             }else{
                 $country->emb ='';
             }

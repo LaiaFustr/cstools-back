@@ -18,8 +18,8 @@ class CountryController extends Controller
     {
 
         /* $sqlPaisDesde = "select papaicod, papainom, papaibus, paestprv, papaibusi, coalesce(EMEXCL , '') as EMB
-                                                    from CENGEBADAD.PAISAREA 
-                                                    left join CENGEBADAD.FCEMBARGO f on EMPAIS = PAPAICOD and EMBAJA = ''
+                                                    from PAISAREA 
+                                                    left join FCEMBARGO f on EMPAIS = PAPAICOD and EMBAJA = ''
                                                     order by 2"; */
         //$countries = Country::all();
 

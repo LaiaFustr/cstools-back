@@ -26,7 +26,7 @@ class CountryController extends Controller
         $countries = Country::with('embargo')
         ->select('papaicod', 'papainom', 'papaibus', 'paestprv', 'papaibuse')->get()
         ->map(function ($country){
-            if(isset($country->embargo->emexcl)){
+            if(isset($country->embargo->emexcl) && $country->embargo->embaja == ''){
                 $country->emb = $country->embargo->emexcl;
             }else{
                 $country->emb ='';

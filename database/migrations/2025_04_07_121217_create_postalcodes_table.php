@@ -29,12 +29,13 @@ return new class extends Migration
             $table->char('cpaliasin');
             $table->string('cpmarcaesp');
             $table->char('cpbaja');
+            $table->timestamps();
 
-            $table->foreign('cpouid')->references('papaicod')->on('countries');
+            $table->foreign('cpcouid')->references('papaicod')->on('countries');
 
             $table->unique(['cpcouid','cptownm', 'cpstrpc']);
 
-            $table->timestamps();
+            
         });
     }
 

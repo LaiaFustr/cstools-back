@@ -22,10 +22,10 @@ class PostalcodeController extends Controller
     where CPCOUID = '$country' and $where
     group by CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD
     order by CPTOWNM, CPPRVNOM, PAESTPRV, CPPRVCOD"; */
-        $country = 'AK';
+        /* $country = 'AK'; */
         $pc = Postalcode::where('cpcouid', $country);
 
-        return response()->json($country);
+        return response()->json($pc);
     }
 
     /**

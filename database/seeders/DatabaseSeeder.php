@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\DemurrageStorage;
 use App\Models\Country;
 use App\Models\Embargo;
+use App\Models\LocalPort;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,8 +29,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
         User::factory(10)->create();
-        Country::factory()->count(200)->create();
 
+
+        Country::factory()->count(200)->create();
         Embargo::factory()->count(30)->create();
+
+        LocalPort::factory()->count(30)->create();
+
     }
 }

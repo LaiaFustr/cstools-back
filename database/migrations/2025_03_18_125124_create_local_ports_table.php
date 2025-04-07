@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('local_ports', function (Blueprint $table) {
             $table->string('plptoloc')->unique();
-            $table->string('plcodpos');
-            $table->string('plnompto');
+            $table->string('plcodpos'); //cod. postalñ puerto
+            $table->string('plnompto'); //nom puerto
             $table->string('pldlgni');//Ofic. IMP Dach: 231, 232, ..
             $table->string('pldlgne'); //Ofic. EXP Dach: 231, 232, ..
-            $table->string('plfecalt');//
-            $table->string('plbaja');
+            $table->date('plfecalt'); //fecha de alta
+            $table->string('plbaja'); //baja
             
 
             $table->timestamps();

@@ -11,23 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('distances', function (Blueprint $table) { //ddistte
-            $table->string('oripai'); //pais origen, p.ej. ES
-            $table->string('oricp');//cod postal pais origen
-            $table->string('despai'); //pais destino, p.ej. ES
-            $table->string('descp');//cod postal pais destino
-            $table->string('tramocp'); //pais origen, p.ej. ES
-            $table->string('dtpuerto');//O origen D destino
-            $table->string('orinom'); //pais origen nom
-            $table->string('desnom');//cpais dest nom
-            $table->float('distkmokay'); //distancia en km acordada
-            $table->float('distm');//dist m
-            $table->float('distkm');//dist km
-            $table->float('disttimesec');//tiempo en segundos
-            $table->string('font');//fuente de origen info
-            $table->string('state');//estado (OK siempre)
-            $table->string('datecalc');//fecha de calculo
-            $table->string('discharge');//baja '' o !='' habitualmente S (booleano)
+        Schema::create('distances', function (Blueprint $table) { //FCDISTTE
+            $table->string('oripai'); //pais origen, p.ej. ES ---DTORIPAI
+            $table->string('oricp');//cod postal pais origen ---DTORIGEN
+            $table->string('despai'); //pais destino, p.ej. ES  ---DTDESPAI
+            $table->string('descp');//cod postal pais destino ---DTDESTIN
+            $table->string('tramocp'); //pais origen, p.ej. ES ---DTTRAMO
+            $table->string('dtpuerto');//O origen D destino ---DTPUERTO
+            $table->string('orinom'); //pais origen nom 
+            $table->string('desnom');//cpais dest nom 
+            $table->float('distkmokay'); //distancia en km acordada ---DTDISTKMOK
+            $table->float('distm');//dist m ---DTDISTMET
+            $table->float('distkm');//dist km ---DTDISTKM
+            $table->float('disttimesec');//tiempo en segundos ---DTTIEMSEG
+            $table->string('font');//fuente de origen info ---DTFUENTE
+            $table->string('state');//estado (OK siempre) ---DTESTADO
+            $table->string('datecalc');//fecha de calculo ---DTFECALT
+            $table->string('discharge');//baja '' o !='' habitualmente S  (booleano) ---DTBAJA
 
             $table->unique(['oripai','oricp','despai','descp']);
 

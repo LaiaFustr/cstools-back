@@ -13,9 +13,19 @@ class PostalcodeController extends Controller
      */
     public function index(Request $country)
     {
-        $pc = Postalcode::all();
 
-        return response()->json($pc);
+
+
+       /*  select CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD, min(CPSTRPC) as MINCP, max(CPENDPC) as MAXCP
+    from CENGEBADAD.CXCODPOS  
+    left join CENGEBADAD.PAISAREA on PAPAICOD = CPCOUID
+    where CPCOUID = '$country' and $where
+    group by CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD
+    order by CPTOWNM, CPPRVNOM, PAESTPRV, CPPRVCOD"; */
+        $country = 'AK';
+        $pc = Postalcode::where('cpcouid', $country);
+
+        return response()->json($country);
     }
 
     /**

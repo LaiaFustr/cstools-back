@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->foreign('cpouid')->references('papaicod')->on('countries');
 
-            $table->index(['cpcouid','cptownm', 'cpstrpc']);
+            $table->unique(['cpcouid','cptownm', 'cpstrpc']);
 
             $table->timestamps();
         });

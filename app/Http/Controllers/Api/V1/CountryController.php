@@ -41,6 +41,8 @@ class CountryController extends Controller
         return response()->json($countries);
     }
 
+    
+
     /**
      * Show the form for creating a new resource.
      */

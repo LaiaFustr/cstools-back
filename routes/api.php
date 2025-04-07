@@ -23,3 +23,5 @@ Route::get('/v1/indexPort', [DemurrageStorageController::class, 'indexPorts']);
 Route::get('/v1/portswherecarrier/{carrier}', [DemurrageStorageController::class, 'portsWhereCarrier']);
 Route::get('/v1/carrierswhereport/{port}', [DemurrageStorageController::class, 'carriersWherePort']);
 Route::post('/v1/calculo', [DemurrageStorageController::class, 'calcRes']);
+
+Route::get('v1/pcbycountry', [CountryController::class, 'cpByCopuntry']);

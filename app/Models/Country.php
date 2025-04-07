@@ -19,4 +19,8 @@ class Country extends Model
     {
         return $this->hasOne(Embargo::class, 'empaicod', 'papaicod');
     }
+
+    public function postalCodes(){
+        return $this->hasMany(Postalcode::class, 'cpcouid', 'papaicod');
+    }
 }

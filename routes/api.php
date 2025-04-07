@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\DemurrageStorageController;
 use App\Http\Controllers\Api\V1\LocalPortController;
+use App\Http\Controllers\Api\V1\PostalcodeController;
 
 
 Route::get('/user', function (Request $request) {
@@ -24,4 +25,4 @@ Route::get('/v1/portswherecarrier/{carrier}', [DemurrageStorageController::class
 Route::get('/v1/carrierswhereport/{port}', [DemurrageStorageController::class, 'carriersWherePort']);
 Route::post('/v1/calculo', [DemurrageStorageController::class, 'calcRes']);
 
-Route::get('v1/pcbycountry', [CountryController::class, 'cpByCopuntry']);
+Route::get('v1/pcbycountry', [PostalcodeController::class, 'index']);

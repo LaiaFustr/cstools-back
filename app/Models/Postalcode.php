@@ -9,7 +9,9 @@ class Postalcode extends Model
 {
     /** @use HasFactory<\Database\Factories\PostalcodeFactory> */
     use HasFactory;
-    
+
+    protected $table = 'postalcodes';
+    protected $fillable = ['cptownm', 'cptownmori', 'cpstrpcori','cpendpcori','cpstrpc','cpendpc','cpprvid','cpprvcod','cpprvnom','cptownpcode','cptownplace','cpdeststat','cptownid','cpaliasin','cpmarcaesp','cpbaja'];
 
     public function country()
     {

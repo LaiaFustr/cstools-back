@@ -7,6 +7,7 @@ use App\Models\DemurrageStorage;
 use App\Models\Country;
 use App\Models\Embargo;
 use App\Models\LocalPort;
+use App\Models\Postalcode;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -35,6 +36,8 @@ class DatabaseSeeder extends Seeder
         Embargo::factory()->count(30)->create();
 
         LocalPort::factory()->count(30)->create();
+
+        Postalcode::factory()->count(3000)->create();
 
     }
 }

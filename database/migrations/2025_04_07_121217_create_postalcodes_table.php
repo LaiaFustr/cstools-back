@@ -24,10 +24,10 @@ return new class extends Migration
             $table->string('cpprvnom'); //nombre provincia/estado
             $table->string('cptownpcode'); //cod. ciudad principal
             $table->char('cptownplace'); //town placein
-            $table->string('cpdeststat');
-            $table->string('cptownid'); //cod. ciudad
+            /* $table->string('cpdeststat');
+            $table->string('cptownid'); //cod. ciudad */
             $table->char('cpaliasin');
-            $table->string('cpmarcaesp');
+            /* $table->string('cpmarcaesp'); */
             $table->char('cpbaja');
             $table->timestamps();
 

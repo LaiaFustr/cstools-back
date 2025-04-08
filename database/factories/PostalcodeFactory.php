@@ -20,9 +20,10 @@ class PostalcodeFactory extends Factory
     {
 
         /* $cps = Postalcode::pluck('cpcouid'); */
-        $city= $this->faker->city();
+        $city= mb_strtoupper($this->faker->city());
         $num = $this->faker->randomNumber(6, true);
-        
+        $cod = $this->faker->randomElement([$this->faker->randomNumber(3, true), $this->faker->unique()->regexify('[A-Z]{2,3}'),'']);
+
         return [
             'cpcouid' => $this->faker->randomElement(Country::all()->pluck('papaicod')),
             'cptownm' => $city,
@@ -31,9 +32,9 @@ class PostalcodeFactory extends Factory
             'cpendpcori'=>$num,
             'cpstrpc'=>$num,
             'cpendpc'=>$num,
-            'cpprvid' =>$this->faker->randomElement([$this->faker->randomNumber(3, true), $this->faker->unique()->regexify('[A-Z]{2,3}'),'']),
-            'cpprvcod'=>$this->faker->randomElement([$this->faker->randomNumber(3, true), $this->faker->unique()->regexify('[A-Z]{2,3}'),'']),
-            'cpprvnom'=>$this->faker->unique()->city(),
+            'cpprvid' =>$cod,
+            'cpprvcod'=>$cod,
+            'cpprvnom'=>mb_strtoupper($this->faker->state),
             'cptownpcode'=>$this->faker->randomElement([$this->faker->randomNumber(5, true),'']),
             'cptownplace'=>$this->faker->randomElement(['Y','N']),
             

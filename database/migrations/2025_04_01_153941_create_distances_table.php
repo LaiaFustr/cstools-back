@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('orinom'); //pais origen nom 
             $table->string('desnom');//cpais dest nom 
             $table->float('distkmokay'); //distancia en km acordada ---DTDISTKMOK
-            $table->float('distm');//dist m ---DTDISTMET
+            $table->float('distm');//dist m ---DTDISTMET 
             $table->float('distkm');//dist km ---DTDISTKM
             $table->float('disttimesec');//tiempo en segundos ---DTTIEMSEG
             $table->string('font');//fuente de origen info ---DTFUENTE
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->unique(['oripai','oricp','despai','descp']);
 
             $table->timestamps();
+            
         });
     }
 

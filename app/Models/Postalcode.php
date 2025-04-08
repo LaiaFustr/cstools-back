@@ -15,6 +15,6 @@ class Postalcode extends Model
 
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'cpcouid', 'papaicod');
     }
 }

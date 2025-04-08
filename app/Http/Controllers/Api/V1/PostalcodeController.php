@@ -24,8 +24,11 @@ class PostalcodeController extends Controller
     group by CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD
     order by CPTOWNM, CPPRVNOM, PAESTPRV, CPPRVCOD"; */
         /* $country = 'AK'; */
-        $pc = Postalcode::with('country')->where('cpcouid', $request['country'])->select('cpcouid','cptownm', 'cptownmori','cpprvnom',/* 'paestprv' */'cpprvcod')->get();
+        $pc = Postalcode::with('country')->where('cpcouid', $request['country'])->select('cpcouid','cptownm', 'cptownmori','cpprvnom','cpprvcod')->get();
+        
+        Log::info('Country recibido: ' . $request['country']);
         Log::info($pc);
+        
         return response()->json($pc);
     }
 

@@ -5,26 +5,27 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Postalcode;
+use Illuminate\Support\Facades\Log;
 
 class PostalcodeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $country)
+    public function index(Request $request)
     {
 
 
 
-       /*  select CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD, min(CPSTRPC) as MINCP, max(CPENDPC) as MAXCP
+        /*  select CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD, min(CPSTRPC) as MINCP, max(CPENDPC) as MAXCP
     from CENGEBADAD.CXCODPOS  
     left join CENGEBADAD.PAISAREA on PAPAICOD = CPCOUID
     where CPCOUID = '$country' and $where
     group by CPTOWNM, CPTOWNMORI, CPPRVNOM, PAESTPRV, CPPRVCOD
     order by CPTOWNM, CPPRVNOM, PAESTPRV, CPPRVCOD"; */
         /* $country = 'AK'; */
-        $pc = Postalcode::with('country')->where('cpcouid', $country);
-
+        $pc = Postalcode::with('country')->where('cpcouid', $request['country'])->select('cpcouid','cptownm', 'cptownmori','cpprvnom',/* 'paestprv' */'cpprvcod')->get();
+        Log::info($pc);
         return response()->json($pc);
     }
 

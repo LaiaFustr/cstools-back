@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DemurrageStorageSeeder::class);
         //DemurrageStorage::factory()->count(50)->create();
 
-        
+        $this->call(DistanceSeeder::class);
 
 
         User::factory()->create([

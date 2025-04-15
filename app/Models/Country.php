@@ -23,4 +23,13 @@ class Country extends Model
     public function postalCodes(){
         return $this->hasMany(Postalcode::class, 'cpcouid', 'papaicod');
     }
+
+
+    
+    public function distanceOri(){
+        return $this->hasMany(Distance::class, 'oripai', 'papaicod');
+    }
+    public function distanceDes(){
+        return $this->hasMany(Distance::class, 'despai', 'papaicod');
+    }
 }

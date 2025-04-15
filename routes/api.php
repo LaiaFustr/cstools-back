@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CountryController;
 use App\Http\Controllers\Api\V1\DemurrageStorageController;
 use App\Http\Controllers\Api\V1\LocalPortController;
 use App\Http\Controllers\Api\V1\PostalcodeController;
+use App\Http\Controllers\Api\V1\DistanceController;
 
 
 Route::get('/user', function (Request $request) {
@@ -26,3 +27,5 @@ Route::get('/v1/carrierswhereport/{port}', [DemurrageStorageController::class, '
 Route::post('/v1/calculo', [DemurrageStorageController::class, 'calcRes']);
 
 Route::get('v1/pcbycountry', [PostalcodeController::class, 'index']);
+
+Route::get('v1/distance', [DistanceController::class, 'index']);

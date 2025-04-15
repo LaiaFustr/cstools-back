@@ -13,7 +13,8 @@ class DistanceController extends Controller
      */
     public function index()
     {
-        //
+        $distance = 'Distanciaas';
+        return response()->json($distance);
     }
 
     /**

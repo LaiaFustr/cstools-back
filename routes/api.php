@@ -28,4 +28,4 @@ Route::post('/v1/calculo', [DemurrageStorageController::class, 'calcRes']);
 
 Route::get('v1/pcbycountry', [PostalcodeController::class, 'index']);
 
-Route::get('v1/distance', [DistanceController::class, 'index']);
+Route::post('v1/distance', [DistanceController::class, 'show']);

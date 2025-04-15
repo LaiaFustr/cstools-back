@@ -13,7 +13,7 @@ class DistanceController extends Controller
      */
     public function index()
     {
-        $distance = 'Distanciaas';
+        $distance = Distance::all();
         return response()->json($distance);
     }
 
@@ -36,9 +36,25 @@ class DistanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-       
+        /* $request->oricountry $request->oriiso, $request->descountry, $request->desiso, $request->oripc, $request->despc, $request->oritown, $request->destown */
+
+
+        //$distance = Distance::all();
+
+
+        $requ = Distance::select('distkmokay', 'distm', 'distkm', 'disttimesec')
+            ->where('oripai', 'ES'/* $request->oriiso */)
+            ->where('despai', 'ES'/* $request->desiso */)
+            ->where('oricp','03600' /* $request->oripc */)
+            ->where('descp', '12100'/* $request->despc */)->get()->first();
+
+
+        //$requ['distance'] = 'Falta la query y listoo';
+
+
+        return response()->json($requ);
     }
 
     /**

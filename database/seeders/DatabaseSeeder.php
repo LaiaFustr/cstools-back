@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 
         LocalPort::factory()->count(30)->create();
 
-        Postalcode::factory()->count(3000)->create();
-
+        /*    Postalcode::factory()->count(3000)->create(); */
+        $this->call(PostalcodeSeeder::class);
     }
 }

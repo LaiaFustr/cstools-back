@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Postalcode;
+
 
 class PostalcodeSeeder extends Seeder
 {
@@ -13,9 +15,10 @@ class PostalcodeSeeder extends Seeder
      */
     public function run(): void
     {
+
         DB::table('postalcodes')->insert([
             [
-              'cpcouid' => $this->faker->randomElement(Country::all()->pluck('papaicod')),
+             /*  'cpcouid' => $this->faker->randomElement(Country::all()->pluck('papaicod')),
             'cptownm' => $city,
             'cptownmori' => $city,
             'cpstrpcori' =>$num,
@@ -28,7 +31,7 @@ class PostalcodeSeeder extends Seeder
             'cptownpcode'=>$this->faker->randomElement([$this->faker->randomNumber(5, true),'']),
             'cptownplace'=>$this->faker->randomElement(['Y','N']),
             'cpaliasin'=>$this->faker->randomElement(['Y','N']),
-            'cpbaja'=>$this->faker->randomElement(['','S']),  
+            'cpbaja'=>$this->faker->randomElement(['','S']),   */
             ],
             [],
             [],
@@ -40,5 +43,6 @@ class PostalcodeSeeder extends Seeder
             [],
             [],
         ]);
+
     }
 }

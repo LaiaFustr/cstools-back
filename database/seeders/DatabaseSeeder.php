@@ -38,6 +38,13 @@ class DatabaseSeeder extends Seeder
         /* LocalPort::factory()->count(30)->create(); */
         $this->call(LocalPortSeeder::class);
         /* Postalcode::factory()->count(3000)->create(); */
-        $this->call(PostalcodeSeeder::class);
+
+        /* Country::factory()->count(200)->create(); */
+        /* Embargo::factory()->count(30)->create(); */
+
+        
+
+  
+
     }
 }

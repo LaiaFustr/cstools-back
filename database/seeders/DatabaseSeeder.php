@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
+        $this->call(CountrySeeder::class);
         $this->call(DemurrageStorageSeeder::class);
         //DemurrageStorage::factory()->count(50)->create();
 
@@ -32,12 +32,12 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
 
 
-        Country::factory()->count(200)->create();
-        Embargo::factory()->count(30)->create();
+        /*  Country::factory()->count(200)->create(); */
+        Embargo::factory()->count(1)->create();
 
-        LocalPort::factory()->count(30)->create();
-
-        Postalcode::factory()->count(3000)->create();
-
+        /* LocalPort::factory()->count(30)->create(); */
+        $this->call(LocalPortSeeder::class);
+        /* Postalcode::factory()->count(3000)->create(); */
+        $this->call(PostalcodeSeeder::class);
     }
 }

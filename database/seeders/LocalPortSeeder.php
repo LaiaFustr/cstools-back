@@ -68,10 +68,19 @@ class LocalPortSeeder extends Seeder
                 'plfecalt' => '2023-03-07',
                 'plbaja' => '',
             ],
+            [
+                'plptoloc' => 'ESALC',
+                'plcodpos' => '03113',
+                'plnompto' => 'ALICANTE',
+                'pldlgni' => '231',
+                'pldlgne' => '231',
+                'plfecalt' => '2023-03-07',
+                'plbaja' => '',
+            ],
+            /* [],
             [],
             [],
-            [],
-            []
+            [] */
         ]);
     }
 }

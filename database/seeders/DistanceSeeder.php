@@ -23,7 +23,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "03110 Alicante, Spain",
                 "desnom" => "46024 Valencia, Spain",
-                
                 "distkmokay" => 188,
                 "distm" => 176418,
                 "distkm" => 177,
@@ -37,6 +36,26 @@ class DistanceSeeder extends Seeder
             ],
             [
                 "oripai" => "ES",
+                "oricp" => "03113",
+                "despai" => "ES",
+                "descp" => "46024",
+                "tramocp" => "ES03110ES46024",
+                "dtpuerto" => "D",
+                "orinom" => "03113 Alicante, Spain",
+                "desnom" => "46024 Valencia, Spain",
+                "distkmokay" => 188,
+                "distm" => 164532,
+                "distkm" => 165,
+                "disttimesec" => 6023,
+                "font" => "WSE",
+                "state" => "OK",
+                "datecalc" => "2023-10-26",
+                "discharge" => "",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                "oripai" => "ES",
                 "oricp" => "46190",
                 "despai" => "ES",
                 "descp" => "08039",
@@ -44,7 +63,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "46190 Riba-roja de Túria, Valencia, Spain",
                 "desnom" => "08039 Barcelona, Spain",
-                
                 "distkmokay" => 0,
                 "distm" => 359580,
                 "distkm" => 360,
@@ -65,7 +83,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "03660 Novelda, Alicante, Spain",
                 "desnom" => "12100 Castellón de la Plana, Castellón, Spain",
-                
                 "distkmokay" => 0,
                 "distm" => 241995,
                 "distkm" => 242,
@@ -86,7 +103,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "03600 Elda, Alicante, Spain",
                 "desnom" => "12100 Castellón de la Plana, Castellón, Spain",
-                
                 "distkmokay" => 0,
                 "distm" => 231744,
                 "distkm" => 232,
@@ -107,7 +123,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "12130 Sant Joan de Moró, Castellón, Spain",
                 "desnom" => "46024 Valencia, Spain",
-                
                 "distkmokay" => 106,
                 "distm" => 86312,
                 "distkm" => 87,
@@ -128,7 +143,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "28918 Leganés, Madrid, Spain",
                 "desnom" => "46024 Valencia, Spain",
-                
                 "distkmokay" => 373,
                 "distm" => 372341,
                 "distkm" => 373,
@@ -149,7 +163,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "28918 Leganés, Madrid, Spain",
                 "desnom" => "08039 Barcelona, Spain",
-               
                 "distkmokay" => 0,
                 "distm" => 634454,
                 "distkm" => 635,
@@ -170,7 +183,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "46970 Alaquàs, Valencia, Spain",
                 "desnom" => "46024 Valencia, Spain",
-                
                 "distkmokay" => 15,
                 "distm" => 19223,
                 "distkm" => 20,
@@ -191,7 +203,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "46011 Valencia, Spain",
                 "desnom" => "46024 Valencia, Spain",
-               
                 "distkmokay" => 0,
                 "distm" => 3482,
                 "distkm" => 4,
@@ -212,7 +223,6 @@ class DistanceSeeder extends Seeder
                 "dtpuerto" => "D",
                 "orinom" => "46134 Foios, Valencia, Spain",
                 "desnom" => "46024 Valencia, Spain",
-                
                 "distkmokay" => 50,
                 "distm" => 17445,
                 "distkm" => 18,

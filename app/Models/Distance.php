@@ -10,7 +10,10 @@ class Distance extends Model
     protected $fillable = ['oripai', 'oricp', 'despai', 'descp', 'tramocp', 'dtpuerto', 'orinom', 'desnom', 'distkmokay', 'distm', 'distkm', 'disttimesec', 'font', 'state', 'datecalc', 'discharge'];
     public $timestamps = true;
 
-    public function Country(){
-        return $this->belongsTo(Country::class);
+    public function oriCountry(){
+        return $this->belongsTo(Country::class, 'oripai');
+    }
+    public function desCountry(){
+        return $this->belongsTo(Country::class, 'despai');
     }
 }

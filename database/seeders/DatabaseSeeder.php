@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
 
 
         /*  Country::factory()->count(200)->create(); */
-        Embargo::factory()->count(1)->create();
-
+        /* Embargo::factory()->count(1)->create(); */
+        $this->call(EmbargoSeeder::class);
         /* LocalPort::factory()->count(30)->create(); */
         $this->call(LocalPortSeeder::class);
         /* Postalcode::factory()->count(3000)->create(); */

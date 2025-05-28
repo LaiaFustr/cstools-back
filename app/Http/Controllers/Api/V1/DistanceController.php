@@ -64,7 +64,7 @@ class DistanceController extends Controller
             ->where('despai',  $desiso) //'ES'
             ->where('oricp', $oripc) //'03600'
             ->where('descp',  $despc)->first(); // '12100' 
-        $requ = $requ->toArray();
+        /* $requ = $requ->toArray(); */
         /* } catch (\Exception $e) {
            $requ = [
                 'error' => 'Error al consultar la distancia: ' . $e->getMessage(),
@@ -75,13 +75,18 @@ class DistanceController extends Controller
         } */
 
 
-        if (count($requ) > 0) {
+        if (/* count( */$requ/* ) > 0 */) {
             //convertir campos a campos con unidades (km, m, m/s)
-            if ($requ['distkmokay'] != 0)
+            if ($requ->distkmokay != 0)
+                $requ->distkmokay = $requ['distkmokay'] . ' km';
+            $requ->distm = $requ['distm'] . ' m';
+            $requ->distkm = $requ['distkm'] . ' km';
+            $requ->disttimesec = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+            /* if ($requ['distkmokay'] != 0)
                 $requ['distkmokay'] = $requ['distkmokay'] . ' km';
             $requ['distm'] = $requ['distm'] . ' m';
             $requ['distkm'] = $requ['distkm'] . ' km';
-            $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+            $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec'])); */
         } else {
 
             $oricountry = str_replace(' ', '%20', Country::where('papaicod', $validated['oriiso'])->value('papainome')); //sacar nombre en inglés
@@ -172,13 +177,18 @@ class DistanceController extends Controller
                         ->where('despai',  $desiso) //'ES'
                         ->where('oricp', $oripc) //'03600'
                         ->where('descp',  $despc)->first(); // '12100'
-                    $requ = $requ->toArray();
 
-                    if ($requ['distkmokay'] != 0)
+                    if ($requ->distkmokay != 0)
+                        $requ->distkmokay = $requ['distkmokay'] . ' km';
+                    $requ->distm = $requ['distm'] . ' m';
+                    $requ->distkm = $requ['distkm'] . ' km';
+                    $requ->disttimesec = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+                    /*  $requ = $requ->toArray(); */
+                    /* if ($requ['distkmokay'] != 0)
                         $requ['distkmokay'] = $requ['distkmokay'] . ' km';
                     $requ['distm'] = $requ['distm'] . ' m';
                     $requ['distkm'] = $requ['distkm'] . ' km';
-                    $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+                    $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec'])); */
                 }
             } catch (\Exception $e) {
                 $requ = [

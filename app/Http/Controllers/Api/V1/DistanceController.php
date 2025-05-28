@@ -81,7 +81,8 @@ class DistanceController extends Controller
                 $requ->distkmokay = $requ['distkmokay'] . ' km';
             $requ->distm = $requ['distm'] . ' m';
             $requ->distkm = $requ['distkm'] . ' km';
-            $requ->disttimesec = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+            $requ->disttimeformat = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+            $requ->disttimesec = $requ['disttimesec'] . ' s';
             /* if ($requ['distkmokay'] != 0)
                 $requ['distkmokay'] = $requ['distkmokay'] . ' km';
             $requ['distm'] = $requ['distm'] . ' m';
@@ -182,7 +183,8 @@ class DistanceController extends Controller
                         $requ->distkmokay = $requ['distkmokay'] . ' km';
                     $requ->distm = $requ['distm'] . ' m';
                     $requ->distkm = $requ['distkm'] . ' km';
-                    $requ->disttimesec = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+                    $requ->disttimeformat = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+                    $requ->disttimesec = $requ['disttimesec'] . ' s';
                     /*  $requ = $requ->toArray(); */
                     /* if ($requ['distkmokay'] != 0)
                         $requ['distkmokay'] = $requ['distkmokay'] . ' km';

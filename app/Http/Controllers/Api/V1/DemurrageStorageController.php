@@ -55,9 +55,10 @@ class DemurrageStorageController extends Controller
         $carrier = $request->carrier;
         $port = $request->port;
         $container = $request->container; //container
-        $free_sto = $request->free_sto_days; //free_sto_days
-        $free_dem = $request->free_days_dem; //free_dem_days
+        $free_storage =  $request->free_storage; //free_sto_days
+        $free_demurrage = $request->free_demurrage; //free_dem_days
         $query_free_sto = '';
+        $query_free_dem = '';
 
         $total_tariff_sto = [];
         $tariff_sto_detail = [];
@@ -68,7 +69,7 @@ class DemurrageStorageController extends Controller
 
 
 
-        if ($free_sto <= 0 || !is_numeric($free_sto) || $free_sto == null) {
+        if ($free_storage <= 0 || !is_numeric($free_storage) || $free_storage == null) {
 
             try {
                 $query_free_sto = DemurrageStorage::where('carrier', $carrier)
@@ -86,7 +87,7 @@ class DemurrageStorageController extends Controller
             }
         }
 
-        if ($free_dem <= 0 || !is_numeric($free_dem) || $free_dem == null) {
+        if ($free_demurrage <= 0 || !is_numeric($free_demurrage) || $free_demurrage == null) {
 
             try {
                 $query_free_dem = DemurrageStorage::where('carrier', $carrier)

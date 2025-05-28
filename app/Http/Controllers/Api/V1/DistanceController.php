@@ -52,21 +52,36 @@ class DistanceController extends Controller
             'oriiso' => 'required',
             'oripc' => 'required',
         ]);
+        /*  $oricountry = $validated['oricountry'];
+        $descountry = $validated['descountry']; */
         $oriiso = $validated['oriiso'];
         $desiso = $validated['desiso'];
         $oripc = $validated['oripc'];
         $despc = $validated['despc'];
+        /*  try { */
         $requ = Distance::select('distkmokay', 'distm', 'distkm', 'disttimesec')
             ->where('oripai',  $oriiso) //'ES'
             ->where('despai',  $desiso) //'ES'
             ->where('oricp', $oripc) //'03600'
-            ->where('descp',  $despc)->get(); // '12100' 
-
+            ->where('descp',  $despc)->first(); // '12100' 
+        $requ = $requ->toArray();
+        /* } catch (\Exception $e) {
+           $requ = [
+                'error' => 'Error al consultar la distancia: ' . $e->getMessage(),
+                'status' => 'error',
+                'distkmokay' => '0',
+                'distm' => '0',
+            ];
+        } */
 
 
         if (count($requ) > 0) {
             //convertir campos a campos con unidades (km, m, m/s)
-
+            if ($requ['distkmokay'] != 0)
+                $requ['distkmokay'] = $requ['distkmokay'] . ' km';
+            $requ['distm'] = $requ['distm'] . ' m';
+            $requ['distkm'] = $requ['distkm'] . ' km';
+            $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
         } else {
 
             $oricountry = str_replace(' ', '%20', Country::where('papaicod', $validated['oriiso'])->value('papainome')); //sacar nombre en inglés
@@ -74,64 +89,105 @@ class DistanceController extends Controller
             $oritown =  str_replace(' ', '%20', Postalcode::where('cpstrpcori', $validated['oripc'])->where('cpendpcori', $validated['oripc'])->where('cpcouid', $oriiso)->value('cptownm'));
             $destown =  str_replace(' ', '%20', Postalcode::where('cpstrpcori', $validated['despc'])->where('cpendpcori', $validated['despc'])->where('cpcouid', $desiso)->value('cptownm'));
 
-                /*  $requ = $destown; */
-                $apidist = Http::withOptions([
-                'verify' => false, 
-               ]
-            )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key=tWA1vz82hpZKSmwRHBuL5bY9lAOufJ2LPEnjEw4Q46b6bkoq5iKZDOcHgkH7kJf6');//5
+            /*  $requ = $destown; */
+            $apidist = Http::withOptions(
+                [
+                    'verify' => false,
+                ]
+            )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key=tWA1vz82hpZKSmwRHBuL5bY9lAOufJ2LPEnjEw4Q46b6bkoq5iKZDOcHgkH7kJf5'); //5
             $response = $apidist->json();
 
             /*  $requ =$oricountry; */
+            try {
+                if (count($response) > 0) {
+                    /*  $requ = $response; */
+                    if (isset($response['origin_addresses'][0])) {
+                        $orinom = $response['origin_addresses'][0];
+                        /* try {
+                            Postalcode::where('cpstrpcori', $oripc)
+                                ->where('cpendpcori', $oripc)
+                                ->where('cpcouid', $oriiso)
+                                ->first();
+                        } catch (\Exception $e) {
+                            Postalcode::create([
+                                'cpcouid' => $oriiso,
+                                'cptownm' => strtoupper($orinom),
+                                'cptownmori' => strtoupper($orinom),
+                                'cpstrpcori' => $oripc,
+                                'cpendpcori' => $oripc,
+                                'cpstrpc' => $oripc,
+                                'cpendpc' => $oripc,
+                            ]);
+                        } */
+                    } else
+                        $orinom = '';
+                    if (isset($response['destination_addresses'][0]))
+                        $desnom =  $response['destination_addresses'][0];
+                    else
+                        $desnom = '';
+                    if (isset($response['rows'][0]['elements'][0]['distance']['value']))
+                        $distm = $response['rows'][0]['elements'][0]['distance']['value'];
+                    else
+                        $distm = 0;
+                    if (isset($response['rows'][0]['elements'][0]['duration']['value']))
+                        $disttimesec = $response['rows'][0]['elements'][0]['duration']['value'];
+                    else
+                        $disttimesec = null;
+                    if (isset($response['status']))
+                        $status = $response['status'];
+                    else
+                        $status = 'Unknown';
+                    $distkm = ceil($distm / 1000);
 
-            if (count($response) > 0) {
-                /*  $requ = $response; */
-                $orinom = $response['origin_addresses'][0];
-                $desnom =  $response['destination_addresses'][0];
-                $distm = isset($response['rows'][0]['elements'][0]['distance']['value']);
-                $disttimesec = isset($response['rows'][0]['elements'][0]['duration']['value']);
-                $status = $response['status'];
-                if ($distm == false)
-                    $distm = 0;
+                    try {
+                        Distance::create([
+                            'oripai' => $oriiso,
+                            'oricp' => $oripc,
+                            'despai' => $desiso,
+                            'descp' => $despc,
+                            'tramocp' => $oriiso . $oripc . $desiso . $despc,
+                            'dtpuerto' => 'O',
+                            'orinom' => $orinom,
+                            'desnom' => $desnom,
+                            'distkmokay' => 0,
+                            'distm' => $distm,
+                            'distkm' => $distkm,
+                            'disttimesec' => $disttimesec,
+                            'font' => 'WSE',
+                            'state' => $status,
+                            'datecalc' => date('Y-m-d'),
+                            'discharge' => '',
+                        ]);
+                    } catch (\Exception $e) {
+                        $requ = [
+                            'error' => 'Error al crear distancia: ' . $e->getMessage(),
+                            'status' => 'error',
+                            'distkmokay' => '0',
+                            'distm' => '0',
+                        ];
+                    }
 
-                if ($disttimesec== false || $disttimesec == null)
-                    $disttimesec = null;
-                   
-                if ($status== false || $status == null)
-                    $status = 'Unknown';
+                    $requ = Distance::select('distkmokay', 'distm', 'distkm', 'disttimesec')
+                        ->where('oripai',  $oriiso) //'ES'
+                        ->where('despai',  $desiso) //'ES'
+                        ->where('oricp', $oripc) //'03600'
+                        ->where('descp',  $despc)->first(); // '12100'
+                    $requ = $requ->toArray();
 
-                $distkm = ceil($distm / 1000);
-
-                /* try { */
-                Distance::create([
-                    'oripai' => $oriiso,
-                    'oricp' => $oripc,
-                    'despai' => $desiso,
-                    'descp' => $despc,
-                    'tramocp' => $oricountry . $oripc . $descountry . $despc,
-                    'dtpuerto' => 'O',
-                    'orinom' => $orinom,
-                    'desnom' => $desnom,
-                    'distkmokay' => 0,
-                    'distm' => $distm,
-                    'distkm' => $distkm,
-                    'disttimesec' => $disttimesec,
-                    'font' => 'WSE',
-                    'state' => $status,
-                    'datecalc' => date('Y-m-d'),
-                    'discharge' => '',
-                ]);
-                /*  } catch (\Exception $e) { */
-                /*  $requ = $e; */
-                /*  } */
-
-                $requ = Distance::select('distkmokay', 'distm', 'distkm', 'disttimesec')
-                    ->where('oripai',  $oriiso) //'ES'
-                    ->where('despai',  $desiso) //'ES'
-                    ->where('oricp', $oripc) //'03600'
-                    ->where('descp',  $despc)->get(); // '12100'
-
-            } /* else {
-            } */
+                    if ($requ['distkmokay'] != 0)
+                        $requ['distkmokay'] = $requ['distkmokay'] . ' km';
+                    $requ['distm'] = $requ['distm'] . ' m';
+                    $requ['distkm'] = $requ['distkm'] . ' km';
+                    $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
+                }
+            } catch (\Exception $e) {
+                $requ = [
+                    'error' => 'Error al procesar la solicitud: ' . $e->getMessage(),
+                    'status' => 'error',
+                    'distkmokay' => '0',
+                    'distm' => '0',
+                ];
+            }
         }
 
         return response()->json($requ);

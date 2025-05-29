@@ -30,12 +30,8 @@ return new class extends Migration
             /* $table->string('cpmarcaesp'); */
             $table->char('cpbaja');
             $table->timestamps();
-
+            $table->primary(['cpcouid', 'cptownm', 'cpstrpc']);
             $table->foreign('cpcouid')->references('papaicod')->on('countries');
-
-            $table->unique(['cpcouid','cptownm', 'cpstrpc']);
-
-            
         });
     }
 

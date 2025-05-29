@@ -15,14 +15,14 @@ return new class extends Migration
 
             $table->string('carrier');
             $table->enum('type', ['DEM', 'STO']);
-            $table->string('port');
+            $table->string('port', 255);
             $table->integer('fromday');
             $table->integer('today');
             $table->float('tar20');
             $table->float('tar40');
             $table->date('valid');
             $table->float('tarsup');
-
+            $table->foreign('port')->references('plnompto')->on('local_ports')->onDelete('cascade');
             $table->unique(['carrier', 'type', 'port', 'fromday', 'today', 'valid']);
 
             $table->timestamps();
@@ -36,5 +36,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('demurrages_storages');
     }
-    
 };

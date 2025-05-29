@@ -11,6 +11,7 @@ class Country extends Model
     use HasFactory;
 
 
+    protected $primaryKey = 'papaicod';
     protected $table = 'countries';
     protected $fillable = ['papaicod', 'papainom', 'papaibus', 'papainomp', 'papaibusp', 'papainomi', 'papaibusi', 'papainomf', 'papaibusf', 'paarecod', 'paarees', 'papaidch', 'pafmtdch', 'pacpcx', 'pacee', 'padiv', 'paestprv', 'pabaja'];
     public $timestamps = true;
@@ -24,12 +25,12 @@ class Country extends Model
         return $this->hasMany(Postalcode::class, 'cpcouid', 'papaicod');
     }
 
-
+/* 
     
     public function distanceOri(){
         return $this->hasMany(Distance::class, 'oripai', 'papaicod');
     }
     public function distanceDes(){
         return $this->hasMany(Distance::class, 'despai', 'papaicod');
-    }
+    } */
 }

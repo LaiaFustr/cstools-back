@@ -92,8 +92,8 @@ class DistanceController extends Controller
 
             $oricountry = str_replace(' ', '%20', Country::where('papaicod', $validated['oriiso'])->value('papainome')); //sacar nombre en inglés
             $descountry = str_replace(' ', '%20', Country::where('papaicod', $validated['desiso'])->value('papainome')); //sacar nombre en inglés
-            $oritown =  str_replace(' ', '%20', Postalcode::where('cpstrpcori', $validated['oripc'])->where('cpendpcori', $validated['oripc'])->where('cpcouid', $oriiso)->value('cptownm'));
-            $destown =  str_replace(' ', '%20', Postalcode::where('cpstrpcori', $validated['despc'])->where('cpendpcori', $validated['despc'])->where('cpcouid', $desiso)->value('cptownm'));
+            $oritown =  str_replace(' ', '%20', Postalcode::where('cpstrpc', $validated['oripc'])/* ->where('cpendpcori', $validated['oripc']) */->where('cpcouid', $oriiso)->value('cptownm'));
+            $destown =  str_replace(' ', '%20', Postalcode::where('cpstrpc', $validated['despc'])/* ->where('cpendpcori', $validated['despc']) */->where('cpcouid', $desiso)->value('cptownm'));
 
             /*  $requ = $destown; */
             $apidist = Http::withOptions(
@@ -149,8 +149,10 @@ class DistanceController extends Controller
                         Distance::create([
                             'oripai' => $oriiso,
                             'oricp' => $oripc,
+                            ''=> '',
                             'despai' => $desiso,
                             'descp' => $despc,
+                            ''=> '',
                             'tramocp' => $oriiso . $oripc . $desiso . $despc,
                             'dtpuerto' => 'O',
                             'orinom' => $orinom,

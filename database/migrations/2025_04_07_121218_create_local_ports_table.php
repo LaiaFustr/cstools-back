@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('local_ports', function (Blueprint $table) {
             $table->string('plptoloc')->unique();
             $table->string('plcodpos'); //cod. postalñ puerto
-            $table->string('plnompto'); //nom puerto
+            $table->string('plnompto')->unique(); //nom puerto
             $table->string('pldlgni');//Ofic. IMP Dach: 231, 232, ..
             $table->string('pldlgne'); //Ofic. EXP Dach: 231, 232, ..
             $table->date('plfecalt'); //fecha de alta
             $table->string('plbaja'); //baja
-            
-
             $table->timestamps();
+
+            //$table->foreign('plcodpos')->references('cpstrpc')->on('postalcodes')->onDelete('cascade');
         });
     }
 

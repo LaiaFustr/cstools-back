@@ -16,7 +16,7 @@ class DemurrageStorage extends Model
     protected $fillable = [
         'carrier',
         'type',
-        'port',
+        /* 'port', */
         'fromday',
         'today',
         'tar20',
@@ -28,4 +28,9 @@ class DemurrageStorage extends Model
         'valid' => 'date'
     ];
     public $timestamps = true;
+
+
+    public function localPorts(){
+        return $this->belongsTo(LocalPort::class, 'port', 'plnompto');
+    }
 }

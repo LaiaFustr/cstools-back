@@ -19,10 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(CountrySeeder::class);
-        $this->call(DemurrageStorageSeeder::class);
-        //DemurrageStorage::factory()->count(50)->create();
 
-        $this->call(DistanceSeeder::class);
 
 
         User::factory()->create([
@@ -43,7 +40,10 @@ class DatabaseSeeder extends Seeder
         $this->call(LocalPortSeeder::class);
         /* Postalcode::factory()->count(3000)->create(); */
         $this->call(PostalcodeSeeder::class);
+        $this->call(DemurrageStorageSeeder::class);
+        //DemurrageStorage::factory()->count(50)->create();
 
+        $this->call(DistanceSeeder::class);
 
         /* Country::factory()->count(200)->create(); */
         /* Embargo::factory()->count(30)->create(); */

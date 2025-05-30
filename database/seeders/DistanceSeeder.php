@@ -17,7 +17,7 @@ class DistanceSeeder extends Seeder
             [
                 "oripai" => "ES",
                 "oricp" => "03110",
-                "cptownori"=>"ARGUIJO",
+                "cptownori"=>"TORRETA. LA",
                 "despai" => "ES",
                 "descp" => "46024",
                 "cptowndest"=>"VALENCIA",
@@ -36,7 +36,7 @@ class DistanceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            [
+             [
                 "oripai" => "ES",
                 "oricp" => "03113",
                 "cptownori"=>"VALLONGA. DE (PARTIDA)",
@@ -168,7 +168,7 @@ class DistanceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            [
+             [
                 "oripai" => "ES",
                 "oricp" => "28918",
                 "cptownori"=>"LEGANES",
@@ -501,7 +501,7 @@ class DistanceSeeder extends Seeder
             [
                 "oripai" => "FR",
                 "oricp" => "66500",
-                "cptownori"=>"",
+                "cptownori"=>"MOSSET",
                 "despai" => "ES",
                 "descp" => "46024",
                 "cptowndest"=>"VALENCIA",
@@ -542,7 +542,7 @@ class DistanceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            [
+           [
                 "oripai" => "ES",
                 "oricp" => "08039",
                 "cptownori"=>"BARCELONA",
@@ -564,13 +564,13 @@ class DistanceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            [
+              [
                 "oripai" => "ES",
                 "oricp" => "46515",
-                "cptownori"=>"",
+                "cptownori"=>"QUART DE LES VALLS",
                 "despai" => "ES",
                 "descp" => "36207",
-                "cptowndest"=>"",
+                "cptowndest"=>"VIGO",
                 "tramocp" => "ES36207ES46515",
                 "dtpuerto" => "D",
                 "orinom" => "46515 Quart de les Valls, Valencia, Spain",
@@ -613,9 +613,9 @@ class DistanceSeeder extends Seeder
                 "oricp" => '4450-204',
                 "cptownori"=>"MATOSINHOS",
                 "despai" => 'ES',
-                "descp" => '06010',
-                "cptowndest"=>"",
-                "tramocp" => 'ES06010PT4450-204 ',
+                "descp" => '08174',
+                "cptowndest"=>"SANT CUGAT DEL VALLES",
+                "tramocp" => 'ES08174PT4450-204 ',
                 "dtpuerto" => 'O',
                 "orinom" => 'Porto de Leixões, Matosinhos, Portugal',
                 "desnom" => '08174 Sant Cugat del Vallès, Barcelona, Spain',
@@ -630,13 +630,13 @@ class DistanceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            [
+             [
                 "oripai" => 'PT',
                 "oricp" => '4450-204',
-                "cptownori"=>"",
+                "cptownori"=>"MATOSINHOS",
                 "despai" => 'ES',
                 "descp" => '12600',
-                "cptowndest"=>"",
+                "cptowndest"=>"VALL DUIXO. LA",
                 "tramocp" => 'ES12600PT4450-204',
                 "dtpuerto" => 'O',
                 "orinom" => 'Leixoes Sport Club, R. Roberto Ivens 528, 4450-277 Matosinhos, Portugal',
@@ -652,13 +652,13 @@ class DistanceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            [
+          [
                 "oripai" => 'PT',
                 "oricp" => '4450-204',
-                "cptownori"=>"",
+                "cptownori"=>"MATOSINHOS",
                 "despai" => 'ES',
                 "descp" => '15310',
-                "cptowndest"=>"",
+                "cptowndest"=>"ABELEDO (TEIXEIRO)",
                 "tramocp" => 'PTES15310',
                 "dtpuerto" => 'O',
                 "orinom" => 'Leixões, Portugal',

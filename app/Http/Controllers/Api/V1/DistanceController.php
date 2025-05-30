@@ -8,6 +8,7 @@ use App\Models\Distance;
 use App\Models\Postalcode;
 use App\Models\Country;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class DistanceController extends Controller
 {
@@ -48,24 +49,29 @@ class DistanceController extends Controller
             'descountry' => 'required',
             'desiso' => 'required',
             'despc' => 'required',
-            //añadir oritown y destown, después de añadir las variables en el servicio y el componente de angular
             'oricountry' => 'required',
             'oriiso' => 'required',
             'oripc' => 'required',
+            'oritown' => 'required',
+            'destown' => 'required'
         ]);
-        /*  $oricountry = $validated['oricountry'];
-        $descountry = $validated['descountry']; */
+        /*  
+        $oricountry = $validated['oricountry'];
+        $descountry = $validated['descountry']; 
+        */
         $oriiso = $validated['oriiso'];
         $desiso = $validated['desiso'];
         $oripc = $validated['oripc'];
         $despc = $validated['despc'];
+        $oritown  = $validated['oritown'];
+        $destown = $validated['destown'];
         /*  try { */
         $requ = Distance::select('distkmokay', 'distm', 'distkm', 'disttimesec')
             ->where('oripai',  $oriiso) //'ES'
             ->where('despai',  $desiso) //'ES'
             ->where('oricp', $oripc) //'03600'
-            ->where('descp',  $despc)->first(); // '12100' 
-        /* $requ = $requ->toArray(); */
+            ->where('descp',  $despc)
+            ->where('cptownori',  $oritown)->where('cptowndest',  $destown)->first(); // '12100' 
         /* } catch (\Exception $e) {
            $requ = [
                 'error' => 'Error al consultar la distancia: ' . $e->getMessage(),
@@ -76,7 +82,7 @@ class DistanceController extends Controller
         } */
 
 
-        if (/* count( */$requ/* ) > 0 */) {
+        if ($requ) {
             //convertir campos a campos con unidades (km, m, m/s)
             if ($requ->distkmokay != 0)
                 $requ->distkmokay = $requ['distkmokay'] . ' km';
@@ -84,39 +90,51 @@ class DistanceController extends Controller
             $requ->distkm = $requ['distkm'] . ' km';
             $requ->disttimeformat = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
             $requ->disttimesec = $requ['disttimesec'] . ' s';
-            /* if ($requ['distkmokay'] != 0)
-                $requ['distkmokay'] = $requ['distkmokay'] . ' km';
-            $requ['distm'] = $requ['distm'] . ' m';
-            $requ['distkm'] = $requ['distkm'] . ' km';
-            $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec'])); */
+            
         } else {
 
             $oricountry = str_replace(' ', '%20', Country::where('papaicod', $validated['oriiso'])->value('papainome')); //sacar nombre en inglés
             $descountry = str_replace(' ', '%20', Country::where('papaicod', $validated['desiso'])->value('papainome')); //sacar nombre en inglés
-            $oritown =  str_replace(' ', '%20', Postalcode::where('cpstrpc', $validated['oripc'])/* ->where('cpendpcori', $validated['oripc']) */->where('cpcouid', $oriiso)->value('cptownm'));
-            $destown =  str_replace(' ', '%20', Postalcode::where('cpstrpc', $validated['despc'])/* ->where('cpendpcori', $validated['despc']) */->where('cpcouid', $desiso)->value('cptownm'));
+            
 
             /*  $requ = $destown; */
             $apidist = Http::withOptions(
                 [
                     'verify' => false,
                 ]
-            )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key='); //5
+            )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key=tWA1vz82hpZKSmwRHBuL5bY9lAOufJ2LPEnjEw4Q46b6bkoq5iKZDOcHgkH7kJf5'); //5
             $response = $apidist->json();
 
-            /*  $requ =$oricountry; */
+
             try {
                 if (count($response) > 0) {
-                    /*  $requ = $response; */
+
                     if (isset($response['origin_addresses'][0])) {
-                        $orinom = $response['origin_addresses'][0];
-                        /* try {
+                        $aux = $response['origin_addresses'][0];
+                        $aux = explode(", ", $aux);
+                        if (isset($aux[2])) {
+                            $cpprvnom = $aux[1];
+                            $aux = explode(" ", $aux[0]);
+                            array_shift($aux);
+                            $orinom = '';
+                            foreach ($aux as $word) {
+                                $orinom .= $word . ' ';
+                            }
+                            $orinom = $aux[1];
+                        } else {
+                            $aux = explode(" ", $aux[0]);
+                            $orinom = $aux[1];
+                            $cpprvnom = '';
+                        }
+                        $orinom = trim($orinom);
+
+                        try {
                             Postalcode::where('cpstrpcori', $oripc)
-                                ->where('cpendpcori', $oripc)
+                                /*  ->where('cpendpcori', $oripc) */
                                 ->where('cpcouid', $oriiso)
                                 ->first();
                         } catch (\Exception $e) {
-                            Postalcode::create([
+                            $requ = Postalcode::create([
                                 'cpcouid' => $oriiso,
                                 'cptownm' => strtoupper($orinom),
                                 'cptownmori' => strtoupper($orinom),
@@ -124,13 +142,71 @@ class DistanceController extends Controller
                                 'cpendpcori' => $oripc,
                                 'cpstrpc' => $oripc,
                                 'cpendpc' => $oripc,
+                                'cpprvid' => '',
+                                'cpprvcod' => '',
+                                'cpprvnom' =>  $cpprvnom,
+                                'cptownpcode' => '54893',
+                                'cptownplace' => 'N',
+                                'cpaliasin' => 'Y',
+                                'cpbaja' => '',
                             ]);
-                        } */
+                            /* $requ[] = [
+                                'error' => 'Error al crear distancia: ' . $e->getMessage(),
+                                'status' => 'error',
+                                'distkmokay' => '0',
+                                'distm' => '0',
+                            ]; */
+                        }
                     } else
                         $orinom = '';
-                    if (isset($response['destination_addresses'][0]))
-                        $desnom =  $response['destination_addresses'][0];
-                    else
+                    if (isset($response['destination_addresses'][0])) {
+                        $aux = $response['destination_addresses'][0];
+                        $aux = explode(", ", $aux);
+                        if (isset($aux[2])) {
+                            $cpprvnom = $aux[1];
+                            $aux = explode(" ", $aux[0]);
+                            array_shift($aux);
+                            $desnom = '';
+                            foreach ($aux as $word) {
+                                $desnom .= $word . ' ';
+                            }
+                            $desnom = $aux[1];
+                        } else {
+                            $aux = explode(" ", $aux[0]);
+                            $desnom = $aux[1];
+                            $cpprvnom = '';
+                        }
+                        $desnom = trim($desnom);
+                        try {
+                            Postalcode::where('cpstrpcori', $despc)
+                                /* ->where('cpendpcori', $despc) */
+                                ->where('cpcouid', $desiso)
+                                ->first();
+                        } catch (\Exception $e) {
+                            $requ = Postalcode::create([
+                                'cpcouid' => $desiso,
+                                'cptownm' => strtoupper($desnom),
+                                'cptownmori' => strtoupper($desnom),
+                                'cpstrpcori' => $despc,
+                                'cpendpcori' => $despc,
+                                'cpstrpc' => $despc,
+                                'cpendpc' => $despc,
+                                'cpprvid' => '',
+                                'cpprvcod' => '',
+                                'cpprvnom' =>  $cpprvnom,
+                                'cptownpcode' => '54893',
+                                'cptownplace' => 'N',
+                                'cpaliasin' => 'Y',
+                                'cpbaja' => '',
+                            ]);
+                            /* $requ[] = [
+                                'error' => 'Error al crear distancia: ' . $e->getMessage(),
+                                'status' => 'error',
+                                'distkmokay' => '0',
+                                'distm' => '0',
+                            ]; */
+                        }
+                    } else
                         $desnom = '';
                     if (isset($response['rows'][0]['elements'][0]['distance']['value']))
                         $distm = $response['rows'][0]['elements'][0]['distance']['value'];
@@ -150,10 +226,10 @@ class DistanceController extends Controller
                         Distance::create([
                             'oripai' => $oriiso,
                             'oricp' => $oripc,
-                            'cptownori'=> '', //una vez añadidas los parámetros a validated y las variables qu erecojan los datos de validated, añadir variables a cptownori y cptowndest
+                            'cptownori' => '', //una vez añadidas los parámetros a validated y las variables qu erecojan los datos de validated, añadir variables a cptownori y cptowndest
                             'despai' => $desiso,
                             'descp' => $despc,
-                            'cptowndest'=> '',
+                            'cptowndest' => '',
                             'tramocp' => $oriiso . $oripc . $desiso . $despc,
                             'dtpuerto' => 'O',
                             'orinom' => $orinom,
@@ -168,10 +244,11 @@ class DistanceController extends Controller
                             'discharge' => '',
                         ]);
                     } catch (\Exception $e) {
-                        $requ = [
+                        $requ[] = [
                             'error' => 'Error al crear distancia: ' . $e->getMessage(),
                             'status' => 'error',
                             'distkmokay' => '0',
+                            'distkm' => '0',
                             'distm' => '0',
                         ];
                     }
@@ -180,7 +257,8 @@ class DistanceController extends Controller
                         ->where('oripai',  $oriiso) //'ES'
                         ->where('despai',  $desiso) //'ES'
                         ->where('oricp', $oripc) //'03600'
-                        ->where('descp',  $despc)->first(); // '12100'
+                        ->where('descp',  $despc) // '12100'
+                        ->where('cptownori',  $oritown)->where('cptowndest',  $destown)->first();
 
                     if ($requ->distkmokay != 0)
                         $requ->distkmokay = $requ['distkmokay'] . ' km';
@@ -204,7 +282,7 @@ class DistanceController extends Controller
                 ];
             }
         }
-
+        Log::info($e);
         return response()->json($requ);
     }
 

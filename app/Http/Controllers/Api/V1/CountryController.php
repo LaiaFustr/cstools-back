@@ -24,16 +24,20 @@ class CountryController extends Controller
         //$countries = Country::all();
 
         $countries = Country::with('embargo')
-        ->select('papaicod', 'papainom', 'papaibus', 'paestprv', 'papaibuse')->get()
-        ->map(function ($country){
-            if(isset($country->embargo->emexcl) && $country->embargo->embaja == ''){
-                $country->emb = $country->embargo->emexcl;
-            }else{
-                $country->emb ='';
-            }
-            unset($country->embargo);
-            return $country;
-        });
+            ->select('papaicod', 'papainom', 'papaibus', 'paestprv', 'papaibuse')->get()
+            ->map(function ($country) {
+               /*  $country->papaicod = 'T';
+                $country->papainom = 'TESTTT';
+                $country->papaibus = 'test';
+                $country->paestprv = 'TESTIING'; */
+                if (isset($country->embargo->emexcl) && $country->embargo->embaja == '') {
+                    $country->emb = $country->embargo->emexcl;
+                } else {
+                    $country->emb = '';
+                }
+                unset($country->embargo);
+                return $country;
+            });
 
 
         //Log::info($countries);
@@ -41,7 +45,7 @@ class CountryController extends Controller
         return response()->json($countries);
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.

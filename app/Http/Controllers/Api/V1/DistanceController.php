@@ -48,6 +48,7 @@ class DistanceController extends Controller
             'descountry' => 'required',
             'desiso' => 'required',
             'despc' => 'required',
+            //añadir oritown y destown, después de añadir las variables en el servicio y el componente de angular
             'oricountry' => 'required',
             'oriiso' => 'required',
             'oripc' => 'required',
@@ -100,7 +101,7 @@ class DistanceController extends Controller
                 [
                     'verify' => false,
                 ]
-            )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key=tWA1vz82hpZKSmwRHBuL5bY9lAOufJ2LPEnjEw4Q46b6bkoq5iKZDOcHgkH7kJf5'); //5
+            )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key='); //5
             $response = $apidist->json();
 
             /*  $requ =$oricountry; */
@@ -149,10 +150,10 @@ class DistanceController extends Controller
                         Distance::create([
                             'oripai' => $oriiso,
                             'oricp' => $oripc,
-                            ''=> '',
+                            'cptownori'=> '', //una vez añadidas los parámetros a validated y las variables qu erecojan los datos de validated, añadir variables a cptownori y cptowndest
                             'despai' => $desiso,
                             'descp' => $despc,
-                            ''=> '',
+                            'cptowndest'=> '',
                             'tramocp' => $oriiso . $oripc . $desiso . $despc,
                             'dtpuerto' => 'O',
                             'orinom' => $orinom,

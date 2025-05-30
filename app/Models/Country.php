@@ -11,7 +11,7 @@ class Country extends Model
     use HasFactory;
 
 
-    protected $primaryKey = 'papaicod';
+    /* protected $primaryKey = 'papaicod'; */
     protected $table = 'countries';
     protected $fillable = ['papaicod', 'papainom', 'papaibus', 'papainomp', 'papaibusp', 'papainomi', 'papaibusi', 'papainomf', 'papaibusf', 'paarecod', 'paarees', 'papaidch', 'pafmtdch', 'pacpcx', 'pacee', 'padiv', 'paestprv', 'pabaja'];
     public $timestamps = true;

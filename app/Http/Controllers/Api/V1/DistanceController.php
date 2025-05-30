@@ -70,8 +70,9 @@ class DistanceController extends Controller
             ->where('oripai',  $oriiso) //'ES'
             ->where('despai',  $desiso) //'ES'
             ->where('oricp', $oripc) //'03600'
-            ->where('descp',  $despc)
-            ->where('cptownori',  $oritown)->where('cptowndest',  $destown)->first(); // '12100' 
+            ->where('descp',  $despc) // '12100' 
+            ->where('cptownori',  $oritown)
+            ->where('cptowndest',  $destown)->first();
         /* } catch (\Exception $e) {
            $requ = [
                 'error' => 'Error al consultar la distancia: ' . $e->getMessage(),
@@ -90,12 +91,11 @@ class DistanceController extends Controller
             $requ->distkm = $requ['distkm'] . ' km';
             $requ->disttimeformat = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
             $requ->disttimesec = $requ['disttimesec'] . ' s';
-            
         } else {
 
             $oricountry = str_replace(' ', '%20', Country::where('papaicod', $validated['oriiso'])->value('papainome')); //sacar nombre en inglés
             $descountry = str_replace(' ', '%20', Country::where('papaicod', $validated['desiso'])->value('papainome')); //sacar nombre en inglés
-            
+
 
             /*  $requ = $destown; */
             $apidist = Http::withOptions(
@@ -104,6 +104,28 @@ class DistanceController extends Controller
                 ]
             )->get('https://api.distancematrix.ai/maps/api/distancematrix/json?origins=' . $oritown . ',' . $oripc . ',' . $oricountry . '&destinations=' . $destown . ',' . $despc . ',' . $descountry . '&key=tWA1vz82hpZKSmwRHBuL5bY9lAOufJ2LPEnjEw4Q46b6bkoq5iKZDOcHgkH7kJf5'); //5
             $response = $apidist->json();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             try {
@@ -120,7 +142,7 @@ class DistanceController extends Controller
                             foreach ($aux as $word) {
                                 $orinom .= $word . ' ';
                             }
-                            $orinom = $aux[1];
+                            /* $orinom = $aux[1]; */
                         } else {
                             $aux = explode(" ", $aux[0]);
                             $orinom = $aux[1];
@@ -223,18 +245,18 @@ class DistanceController extends Controller
                     $distkm = ceil($distm / 1000);
 
                     try {
-                        Distance::create([
+                      $requ =  Distance::create([
                             'oripai' => $oriiso,
                             'oricp' => $oripc,
-                            'cptownori' => '', //una vez añadidas los parámetros a validated y las variables qu erecojan los datos de validated, añadir variables a cptownori y cptowndest
+                            'cptownori' => $oritown, //una vez añadidas los parámetros a validated y las variables que recojan los datos de validated, añadir variables a cptownori y cptowndest
                             'despai' => $desiso,
                             'descp' => $despc,
-                            'cptowndest' => '',
+                            'cptowndest' => $destown,
                             'tramocp' => $oriiso . $oripc . $desiso . $despc,
                             'dtpuerto' => 'O',
                             'orinom' => $orinom,
                             'desnom' => $desnom,
-                            'distkmokay' => 0,
+                            'distkmokay' => '0',
                             'distm' => $distm,
                             'distkm' => $distkm,
                             'disttimesec' => $disttimesec,
@@ -244,13 +266,13 @@ class DistanceController extends Controller
                             'discharge' => '',
                         ]);
                     } catch (\Exception $e) {
-                        $requ[] = [
+                       /*  $requ[] = [
                             'error' => 'Error al crear distancia: ' . $e->getMessage(),
                             'status' => 'error',
                             'distkmokay' => '0',
                             'distkm' => '0',
                             'distm' => '0',
-                        ];
+                        ]; */
                     }
 
                     $requ = Distance::select('distkmokay', 'distm', 'distkm', 'disttimesec')
@@ -260,19 +282,50 @@ class DistanceController extends Controller
                         ->where('descp',  $despc) // '12100'
                         ->where('cptownori',  $oritown)->where('cptowndest',  $destown)->first();
 
-                    if ($requ->distkmokay != 0)
+                    if ($requ->distkmokay  && $requ->distkmokay != 0)
                         $requ->distkmokay = $requ['distkmokay'] . ' km';
                     $requ->distm = $requ['distm'] . ' m';
                     $requ->distkm = $requ['distkm'] . ' km';
                     $requ->disttimeformat = date('H:i:s', mktime(0, 0, $requ['disttimesec']));
                     $requ->disttimesec = $requ['disttimesec'] . ' s';
-                    /*  $requ = $requ->toArray(); */
-                    /* if ($requ['distkmokay'] != 0)
-                        $requ['distkmokay'] = $requ['distkmokay'] . ' km';
-                    $requ['distm'] = $requ['distm'] . ' m';
-                    $requ['distkm'] = $requ['distkm'] . ' km';
-                    $requ['disttimesec'] = date('H:i:s', mktime(0, 0, $requ['disttimesec'])); */
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                } else{
+                    $requ = [
+                    'error' => 'Alguno de los datos no existe: ',
+                    'status' => 'error',
+                    'distkmokay' => '-',
+                    'distm' => '-',
+                ];
                 }
+
+
+
+
+
+
+
+
+
+
+
+
             } catch (\Exception $e) {
                 $requ = [
                     'error' => 'Error al procesar la solicitud: ' . $e->getMessage(),
@@ -282,6 +335,16 @@ class DistanceController extends Controller
                 ];
             }
         }
+
+
+
+
+
+
+
+
+
+        Log::info($requ);
         Log::info($e);
         return response()->json($requ);
     }

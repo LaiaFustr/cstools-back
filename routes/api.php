@@ -9,9 +9,17 @@ use App\Http\Controllers\Api\V1\PostalcodeController;
 use App\Http\Controllers\Api\V1\DistanceController;
 
 
+
+
+
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+
+
 
 Route::apiResource('v1/countries', CountryController::class);
 
